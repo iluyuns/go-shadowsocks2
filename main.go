@@ -14,8 +14,8 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/shadowsocks/go-shadowsocks2/core"
-	"github.com/shadowsocks/go-shadowsocks2/socks"
+	"github.com/iluyuns/go-shadowsocks2/core"
+	"github.com/iluyuns/go-shadowsocks2/socks"
 )
 
 var config struct {
@@ -43,8 +43,10 @@ func main() {
 		TCP        bool
 		Plugin     string
 		PluginOpts string
+		HttpProxy  string
 	}
 
+	flag.StringVar(&flags.HttpProxy, "http-proxy", "", "(client-only) http CONNECT listen address")
 	flag.BoolVar(&config.Verbose, "verbose", false, "verbose mode")
 	flag.StringVar(&flags.Cipher, "cipher", "AEAD_CHACHA20_POLY1305", "available ciphers: "+strings.Join(core.ListCipher(), " "))
 	flag.StringVar(&flags.Key, "key", "", "base64url-encoded key (derive from password if empty)")
@@ -137,6 +139,10 @@ func main() {
 			if flags.UDPSocks {
 				go udpSocksLocal(flags.Socks, udpAddr, ciph.PacketConn)
 			}
+		}
+
+		if flags.HttpProxy != "" {
+			go httpLocal(flags.HttpProxy, addr, ciph.StreamConn)
 		}
 
 		if flags.RedirTCP != "" {

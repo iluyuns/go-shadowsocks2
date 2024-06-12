@@ -1,10 +1,12 @@
 # go-shadowsocks2
 
+## new add http proxy mode
+
 A fresh implementation of Shadowsocks in Go.
 
-GoDoc at https://godoc.org/github.com/shadowsocks/go-shadowsocks2/
+GoDoc at https://godoc.org/github.com/iluyuns/go-shadowsocks2/
 
-![Build and test](https://github.com/shadowsocks/go-shadowsocks2/workflows/Build%20and%20test/badge.svg)
+![Build and test](https://github.com/iluyuns/go-shadowsocks2/workflows/Build%20and%20test/badge.svg)
 
 
 ## Features
@@ -20,12 +22,12 @@ GoDoc at https://godoc.org/github.com/shadowsocks/go-shadowsocks2/
 
 ## Install
 
-Pre-built binaries for common platforms are available at https://github.com/shadowsocks/go-shadowsocks2/releases
+Pre-built binaries for common platforms are available at https://github.com/iluyuns/go-shadowsocks2/releases
 
 Install from source
 
 ```sh
-go install -u github.com/shadowsocks/go-shadowsocks2@latest
+go install -u github.com/iluyuns/go-shadowsocks2@latest
 ```
 
 
@@ -49,7 +51,8 @@ respectively.
 ```sh
 go-shadowsocks2 -c 'ss://AEAD_CHACHA20_POLY1305:your-password@[server_address]:8488' \
     -verbose -socks :1080 -u -udptun :8053=8.8.8.8:53,:8054=8.8.4.4:53 \
-                             -tcptun :8053=8.8.8.8:53,:8054=8.8.4.4:53
+                             -tcptun :8053=8.8.8.8:53,:8054=8.8.4.4:53 \
+                             -http-proxy :1090
 ```
 
 Replace `[server_address]` with the server's public address.

@@ -10,13 +10,19 @@ import (
 	"sync"
 	"time"
 
-	"github.com/shadowsocks/go-shadowsocks2/socks"
+	"github.com/iluyuns/go-shadowsocks2/httpproxy"
+	"github.com/iluyuns/go-shadowsocks2/socks"
 )
 
 // Create a SOCKS server listening on addr and proxy to server.
 func socksLocal(addr, server string, shadow func(net.Conn) net.Conn) {
 	logf("SOCKS proxy %s <-> %s", addr, server)
 	tcpLocal(addr, server, shadow, func(c net.Conn) (socks.Addr, error) { return socks.Handshake(c) })
+}
+
+func httpLocal(addr, server string, shadow func(net.Conn) net.Conn) {
+	logf("http proxy %s <-> %s", addr, server)
+	tcpLocal(addr, server, shadow, func(c net.Conn) (socks.Addr, error) { return httpproxy.Handshake(c) })
 }
 
 // Create a TCP tunnel from addr to target via server.
